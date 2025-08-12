@@ -6,24 +6,53 @@ export interface User {
   email?: string
   phone?: string
   name: string
+  token?: string
 }
 
 interface AuthState {
   user: User | null
   isLoading: boolean
   error: string | null
+  isInitialized: boolean
   
   // Actions
   login: (identifier: string, password: string) => Promise<boolean>
   register: (identifier: string, password: string, name: string) => Promise<boolean>
   logout: () => void
   clearError: () => void
+  initAuth: () => void
+}
+
+// 存储和获取用户信息的辅助函数
+const getStoredUser = (): User | null => {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('user')
+    if (stored) {
+      try {
+        return JSON.parse(stored)
+      } catch {
+        localStorage.removeItem('user')
+      }
+    }
+  }
+  return null
+}
+
+const setStoredUser = (user: User | null) => {
+  if (typeof window !== 'undefined') {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user))
+    } else {
+      localStorage.removeItem('user')
+    }
+  }
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isLoading: false,
   error: null,
+  isInitialized: false,
 
   login: async (identifier: string, password: string) => {
     set({ isLoading: true, error: null })
@@ -37,9 +66,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const user: User = {
         id: Math.random().toString(36).substr(2, 9),
         name: 'User',
+        token: 'mock_token_' + Math.random().toString(36).substr(2, 9),
         ...(isEmail ? { email: identifier } : { phone: identifier })
       }
       
+      setStoredUser(user)
       set({ user, isLoading: false })
       return true
     } catch (error) {
@@ -63,9 +94,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const user: User = {
         id: Math.random().toString(36).substr(2, 9),
         name,
+        token: 'mock_token_' + Math.random().toString(36).substr(2, 9),
         ...(isEmail ? { email: identifier } : { phone: identifier })
       }
       
+      setStoredUser(user)
       set({ user, isLoading: false })
       return true
     } catch (error) {
@@ -78,10 +111,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   logout: () => {
+    setStoredUser(null)
     set({ user: null, error: null })
   },
 
   clearError: () => {
     set({ error: null })
+  },
+
+  initAuth: () => {
+    const storedUser = getStoredUser()
+    set({ user: storedUser, isInitialized: true })
   }
 }))

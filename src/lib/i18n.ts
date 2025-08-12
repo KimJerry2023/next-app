@@ -9,7 +9,10 @@ const resources = {
         home: "首页",
         login: "登录", 
         register: "注册",
-        websocket_demo: "WebSocket 演示"
+        websocket_demo: "WebSocket 演示",
+        market: "行情",
+        wealth: "理财",
+        assets: "资产"
       },
       language: {
         chinese: "中文",
@@ -126,7 +129,10 @@ const resources = {
         home: "Home",
         login: "Login",
         register: "Register", 
-        websocket_demo: "WebSocket Demo"
+        websocket_demo: "WebSocket Demo",
+        market: "Market",
+        wealth: "Wealth",
+        assets: "Assets"
       },
       language: {
         chinese: "中文",
@@ -243,7 +249,10 @@ const resources = {
         home: "ホーム",
         login: "ログイン",
         register: "登録",
-        websocket_demo: "WebSocket デモ"
+        websocket_demo: "WebSocket デモ",
+        market: "相場",
+        wealth: "資産運用",
+        assets: "資産"
       },
       language: {
         chinese: "中文",

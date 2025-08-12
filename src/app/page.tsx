@@ -1,41 +1,46 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuthStore } from '@/store/authStore'
 import { useTranslation } from 'react-i18next'
 
 export default function Home() {
-  const { user, logout } = useAuthStore()
+  const { user, isInitialized, initAuth } = useAuthStore()
   const { t } = useTranslation('common')
+  const router = useRouter()
 
-  if (user) {
+  useEffect(() => {
+    // 初始化认证状态
+    if (!isInitialized) {
+      initAuth()
+    }
+  }, [isInitialized, initAuth])
+
+  useEffect(() => {
+    // 如果用户已登录且有token，自动跳转到首页
+    if (isInitialized && user && user.token) {
+      router.push('/home')
+    }
+  }, [user, isInitialized, router])
+
+  // 如果还没初始化，显示加载状态
+  if (!isInitialized) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">{t('common.welcome_back')}</h1>
-            <div className="space-y-2 mb-6">
-              <p className="text-gray-600">
-                <span className="font-medium">{t('common.name')}:</span> {user.name}
-              </p>
-              {user.email && (
-                <p className="text-gray-600">
-                  <span className="font-medium">{t('common.email')}:</span> {user.email}
-                </p>
-              )}
-              {user.phone && (
-                <p className="text-gray-600">
-                  <span className="font-medium">{t('common.phone')}:</span> {user.phone}
-                </p>
-              )}
-            </div>
-            <button
-              onClick={logout}
-              className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
-            >
-              {t('common.logout')}
-            </button>
-          </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  // 如果用户已登录，显示跳转状态
+  if (user && user.token) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">正在跳转到首页...</p>
         </div>
       </div>
     )

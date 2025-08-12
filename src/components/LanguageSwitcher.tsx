@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const languages = [
   { code: 'zh', name: '中文', flag: '🇨🇳' },
@@ -16,6 +16,9 @@ export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState('zh');
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // 从localStorage获取保存的语言设置
@@ -50,61 +53,122 @@ export default function LanguageSwitcher() {
     // 只需要调用 i18n.changeLanguage，其他的同步工作由事件监听器处理
     i18n.changeLanguage(languageCode);
     setIsOpen(false);
+    setFocusedIndex(-1);
+    
+    // 重新聚焦到按钮
+    buttonRef.current?.focus();
     
     // 由于项目没有使用动态路由，只是改变语言状态
     // 不需要路由跳转
   };
 
+  // 键盘导航处理
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (!isOpen) {
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        setIsOpen(true);
+        setFocusedIndex(0);
+      }
+      return;
+    }
+
+    switch (event.key) {
+      case 'Escape':
+        event.preventDefault();
+        setIsOpen(false);
+        setFocusedIndex(-1);
+        buttonRef.current?.focus();
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        setFocusedIndex(prev => (prev + 1) % languages.length);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setFocusedIndex(prev => prev <= 0 ? languages.length - 1 : prev - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        if (focusedIndex >= 0) {
+          handleLanguageChange(languages[focusedIndex].code);
+        }
+        break;
+      case 'Tab':
+        setIsOpen(false);
+        setFocusedIndex(-1);
+        break;
+    }
+  };
+
+  // 点击外部关闭下拉菜单
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setFocusedIndex(-1);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="relative inline-block text-left">
+    <div 
+      className="relative inline-block text-left" 
+      ref={dropdownRef}
+      onKeyDown={handleKeyDown}
+    >
       <button
+        ref={buttonRef}
         type="button"
-        className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="inline-flex items-center justify-center rounded-full w-10 h-10 border border-gray-300 shadow-sm bg-white text-lg hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="true"
-        aria-expanded="true"
+        aria-expanded={isOpen}
+        aria-label={`${t('language.select_language')} - ${currentLanguage.name}`}
+        title={currentLanguage.name}
       >
-        <span className="mr-2">{currentLanguage.flag}</span>
-        {currentLanguage.name}
-        <svg
-          className="-mr-1 ml-2 h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <span className="text-xl">{currentLanguage.flag}</span>
       </button>
 
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-          <div className="py-1" role="menu" aria-orientation="vertical">
-            <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-200">
+        <div className="origin-top-right absolute right-0 mt-3 w-48 rounded-lg shadow-xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-100">
+          <div className="py-2" role="menu" aria-orientation="vertical">
+            <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100">
               {t('language.select_language')}
             </div>
-            {languages.map((language) => (
+            {languages.map((language, index) => (
               <button
                 key={language.code}
                 className={`${
                   currentLanguage.code === language.code
-                    ? 'bg-blue-50 text-blue-900'
-                    : 'text-gray-700'
-                } group flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 transition-colors duration-200`}
+                    ? 'bg-blue-50 text-blue-900 border-l-4 border-blue-500'
+                    : focusedIndex === index 
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'text-gray-700 hover:bg-blue-50 hover:text-blue-800 hover:translate-x-1'
+                } group flex items-center px-4 py-3 text-sm w-full text-left transition-all duration-300 ease-in-out relative`}
                 role="menuitem"
+                tabIndex={-1}
+                aria-selected={currentLanguage.code === language.code}
                 onClick={() => handleLanguageChange(language.code)}
+                onMouseEnter={() => setFocusedIndex(index)}
               >
-                <span className="mr-3 text-lg">{language.flag}</span>
-                {language.name}
+                <span className="mr-3 text-xl">{language.flag}</span>
+                <span className="font-medium">{language.name}</span>
                 {currentLanguage.code === language.code && (
                   <svg
                     className="ml-auto h-4 w-4 text-blue-600"
                     fill="currentColor"
                     viewBox="0 0 20 20"
+                    aria-hidden="true"
                   >
                     <path
                       fillRule="evenodd"
@@ -117,14 +181,6 @@ export default function LanguageSwitcher() {
             ))}
           </div>
         </div>
-      )}
-
-      {/* 点击外部关闭下拉菜单 */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsOpen(false)}
-        />
       )}
     </div>
   );

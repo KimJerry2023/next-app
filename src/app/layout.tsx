@@ -5,6 +5,7 @@ import I18nProvider from "@/components/I18nProvider";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import SWRProvider from "@/components/SWRProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,12 +59,14 @@ export default function RootLayout({
       >
         <ThemeProvider defaultTheme="dark">
           <I18nProvider>
-            {/* 全局控制器区域 - 顶部banner */}
-            <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-card/95 backdrop-blur-sm border border-border rounded-lg p-2 shadow-lg">
-              <ThemeToggle />
-              <LanguageSwitcher />
-            </div>
-            {children}
+            <SWRProvider>
+              {/* 全局控制器区域 - 顶部banner */}
+              <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-card/95 backdrop-blur-sm border border-border rounded-lg p-2 shadow-lg">
+                <ThemeToggle />
+                <LanguageSwitcher />
+              </div>
+              {children}
+            </SWRProvider>
           </I18nProvider>
         </ThemeProvider>
       </body>

@@ -105,6 +105,18 @@ const resources = {
         cancel: "取消",
         confirm: "确认",
         save: "保存"
+      },
+      error: {
+        page_not_found: "页面未找到",
+        page_not_found_description: "抱歉，您访问的页面不存在或已被移除。",
+        something_went_wrong: "出现了一些问题",
+        error_description: "抱歉，应用程序遇到了意外错误。我们正在努力解决这个问题。",
+        back_to_home: "返回首页",
+        go_back: "返回上一页",
+        try_again: "重新尝试",
+        need_help: "如果问题持续存在，请联系技术支持。",
+        persistent_problem: "如果问题持续存在，请刷新页面或联系技术支持。",
+        error_details: "错误详情"
       }
     }
   },
@@ -210,6 +222,18 @@ const resources = {
         cancel: "Cancel",
         confirm: "Confirm",
         save: "Save"
+      },
+      error: {
+        page_not_found: "Page Not Found",
+        page_not_found_description: "Sorry, the page you are looking for does not exist or has been removed.",
+        something_went_wrong: "Something Went Wrong",
+        error_description: "Sorry, the application encountered an unexpected error. We are working to resolve this issue.",
+        back_to_home: "Back to Home",
+        go_back: "Go Back",
+        try_again: "Try Again",
+        need_help: "If the problem persists, please contact technical support.",
+        persistent_problem: "If the problem persists, please refresh the page or contact technical support.",
+        error_details: "Error Details"
       }
     }
   },
@@ -315,6 +339,18 @@ const resources = {
         cancel: "キャンセル",
         confirm: "確認",
         save: "保存"
+      },
+      error: {
+        page_not_found: "ページが見つかりません",
+        page_not_found_description: "申し訳ございませんが、お探しのページは存在しないか削除されました。",
+        something_went_wrong: "問題が発生しました",
+        error_description: "申し訳ございませんが、アプリケーションで予期しないエラーが発生しました。この問題の解決に取り組んでいます。",
+        back_to_home: "ホームに戻る",
+        go_back: "戻る",
+        try_again: "再試行",
+        need_help: "問題が続く場合は、技術サポートにお問い合わせください。",
+        persistent_problem: "問題が続く場合は、ページを更新するか技術サポートにお問い合わせください。",
+        error_details: "エラー詳細"
       }
     }
   }

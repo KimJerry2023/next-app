@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
+/* 基础变量定义 - 默认使用暗黑模式 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 暗色主题作为默认 */
+  --color-background: 2 6 23; /* slate-950 */
+  --color-foreground: 248 250 252; /* slate-50 */
+  --color-primary: 59 130 246; /* blue-500 */
+  --color-primary-foreground: 255 255 255; /* white */
+  --color-secondary: 30 41 59; /* slate-800 */
+  --color-secondary-foreground: 248 250 252; /* slate-50 */
+  --color-accent: 51 65 85; /* slate-700 */
+  --color-accent-foreground: 248 250 252; /* slate-50 */
+  --color-muted: 51 65 85; /* slate-700 */
+  --color-muted-foreground: 148 163 184; /* slate-400 */
+  --color-card: 15 23 42; /* slate-900 */
+  --color-card-foreground: 248 250 252; /* slate-50 */
+  --color-border: 51 65 85; /* slate-700 */
+  --color-input: 51 65 85; /* slate-700 */
+  --color-ring: 59 130 246; /* blue-500 */
+  --color-destructive: 239 68 68; /* red-500 */
+  --color-destructive-foreground: 255 255 255; /* white */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 亮色主题 - 当明确切换到亮色模式时使用 */
+:root.light,
+.light {
+  --color-background: 248 250 252; /* slate-50 - 主背景改为浅灰 */
+  --color-foreground: 15 23 42; /* slate-900 */
+  --color-primary: 59 130 246; /* blue-500 */
+  --color-primary-foreground: 255 255 255; /* white */
+  --color-secondary: 241 245 249; /* slate-100 */
+  --color-secondary-foreground: 15 23 42; /* slate-900 */
+  --color-accent: 226 232 240; /* slate-200 */
+  --color-accent-foreground: 15 23 42; /* slate-900 */
+  --color-muted: 226 232 240; /* slate-200 */
+  --color-muted-foreground: 100 116 139; /* slate-500 */
+  --color-card: 255 255 255; /* white - 卡片保持纯白 */
+  --color-card-foreground: 15 23 42; /* slate-900 */
+  --color-border: 226 232 240; /* slate-200 */
+  --color-input: 255 255 255; /* white */
+  --color-ring: 59 130 246; /* blue-500 */
+  --color-destructive: 239 68 68; /* red-500 */
+  --color-destructive-foreground: 255 255 255; /* white */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* 暗色主题 - 与默认主题保持一致，已在:root中定义 */
 
+/* 通用样式 */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-geist-sans, ui-sans-serif, system-ui);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-foreground) / 0.7);
+}
+
+/* 选择文本样式 */
+::selection {
+  background-color: rgb(var(--color-primary) / 0.2);
+  color: rgb(var(--color-foreground));
+}
+
+/* 焦点样式 */
+*:focus-visible {
+  outline: 2px solid rgb(var(--color-ring));
+  outline-offset: 2px;
+}
+
+/* 平滑过渡 */
+* {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* 内容遮罩效果 - 顶部渐入效果 */
+.mask-content-top {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 20px,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 20px,
+    black 100%
+  );
+}
+
+/* 确保内容区域有合适的高度和滚动 */
+.content-scroll {
+  max-height: calc(100vh - 160px); /* 减去顶部和底部的空间 */
+  overflow-y: auto;
+}
+
+/* 页面内容容器 - 确保与顶部banner有足够距离 */
+.page-content {
+  padding-top: 1rem;
+  min-height: calc(100vh - 160px);
 }

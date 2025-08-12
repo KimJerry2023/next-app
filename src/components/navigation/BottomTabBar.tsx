@@ -59,7 +59,7 @@ export default function BottomTabBar() {
   ]
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-background/100 backdrop-blur-none border-t border-border z-50 shadow-lg">
       <div className="flex">
         {tabs.map((tab) => {
           const isActive = pathname === tab.href
@@ -67,22 +67,24 @@ export default function BottomTabBar() {
             <Link
               key={tab.key}
               href={tab.href}
-              className={`flex-1 flex flex-col items-center py-2 px-1 ${
+              className={`flex-1 flex flex-col items-center py-3 px-1 transition-colors ${
                 isActive
-                  ? 'text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <div className={`${isActive ? 'text-blue-600' : 'text-gray-400'}`}>
+              <div className={`${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
                 {tab.icon}
               </div>
-              <span className={`text-xs mt-1 ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+              <span className={`text-xs mt-1 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
                 {tab.label}
               </span>
             </Link>
           )
         })}
       </div>
+      {/* 底部安全区域间距 */}
+      <div className="pb-safe h-safe"></div>
     </div>
   )
 }

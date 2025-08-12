@@ -129,7 +129,7 @@ export default function LanguageSwitcher() {
       <button
         ref={buttonRef}
         type="button"
-        className="inline-flex items-center justify-center rounded-full w-10 h-10 border border-gray-300 shadow-sm bg-white text-lg hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
+        className="inline-flex items-center justify-center rounded-full w-10 h-10 border border-border shadow-sm bg-card text-lg hover:bg-accent hover:border-primary hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-all duration-300 ease-in-out"
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="true"
         aria-expanded={isOpen}
@@ -140,9 +140,9 @@ export default function LanguageSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-3 w-48 rounded-lg shadow-xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-100">
+        <div className="origin-top-right absolute right-0 mt-3 w-48 rounded-lg shadow-xl bg-card ring-1 ring-border focus:outline-none z-50 border border-border">
           <div className="py-2" role="menu" aria-orientation="vertical">
-            <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100">
+            <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border">
               {t('language.select_language')}
             </div>
             {languages.map((language, index) => (
@@ -150,10 +150,10 @@ export default function LanguageSwitcher() {
                 key={language.code}
                 className={`${
                   currentLanguage.code === language.code
-                    ? 'bg-blue-50 text-blue-900 border-l-4 border-blue-500'
+                    ? 'bg-primary/10 text-primary-foreground border-l-4 border-primary'
                     : focusedIndex === index 
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'text-gray-700 hover:bg-blue-50 hover:text-blue-800 hover:translate-x-1'
+                      ? 'bg-accent text-accent-foreground'
+                      : 'text-card-foreground hover:bg-accent hover:text-accent-foreground hover:translate-x-1'
                 } group flex items-center px-4 py-3 text-sm w-full text-left transition-all duration-300 ease-in-out relative`}
                 role="menuitem"
                 tabIndex={-1}
@@ -165,7 +165,7 @@ export default function LanguageSwitcher() {
                 <span className="font-medium">{language.name}</span>
                 {currentLanguage.code === language.code && (
                   <svg
-                    className="ml-auto h-4 w-4 text-blue-600"
+                    className="ml-auto h-4 w-4 text-primary"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     aria-hidden="true"

@@ -2,7 +2,7 @@ import WebSocketExample from '@/components/examples/WebSocketExample';
 
 export default function WebSocketDemoPage() {
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="min-h-screen bg-background py-8 pt-20">
       <WebSocketExample />
     </div>
   );

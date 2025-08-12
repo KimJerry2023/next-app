@@ -29,7 +29,7 @@ export default function Home() {
   if (!isInitialized) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     )
   }
@@ -39,20 +39,20 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">正在跳转到首页...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">正在跳转到首页...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-20">
+      <div className="max-w-md w-full bg-card rounded-lg shadow-lg p-8 border border-border">
         <div className="text-center">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">{t('common.welcome')}</h1>
-            <p className="text-lg text-gray-600">
+            <h1 className="text-4xl font-bold text-card-foreground mb-4">{t('common.welcome')}</h1>
+            <p className="text-lg text-muted-foreground">
               {t('common.welcome_message')}
             </p>
           </div>
@@ -60,21 +60,21 @@ export default function Home() {
           <div className="space-y-4">
             <Link
               href="/login"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors block text-center font-medium"
+              className="w-full bg-primary text-primary-foreground py-3 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors block text-center font-medium"
             >
               {t('auth.login')}
             </Link>
             
             <Link
               href="/register"
-              className="w-full bg-white text-blue-600 py-3 px-4 rounded-md border-2 border-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors block text-center font-medium"
+              className="w-full bg-card text-primary py-3 px-4 rounded-md border-2 border-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors block text-center font-medium"
             >
               {t('auth.register')}
             </Link>
           </div>
           
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <p className="text-sm text-gray-500">
+          <div className="mt-8 pt-6 border-t border-border">
+            <p className="text-sm text-muted-foreground">
               {t('common.start_journey')}
             </p>
           </div>

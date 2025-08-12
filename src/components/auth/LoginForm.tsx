@@ -35,12 +35,12 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">{t('auth.login')}</h2>
+    <div className="w-full max-w-md mx-auto p-6 bg-card rounded-lg shadow-lg border border-border">
+      <h2 className="text-2xl font-bold text-center text-card-foreground mb-6">{t('auth.login')}</h2>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="identifier" className="block text-sm font-medium text-card-foreground mb-1">
             {t('auth.email_or_phone')}
           </label>
           <input
@@ -50,18 +50,18 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
               validate: formValidators.identifier,
               onChange: handleInputChange
             })}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.identifier ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
+              errors.identifier ? 'border-destructive' : 'border-border'
             }`}
             placeholder={t('auth.email_or_phone_placeholder')}
           />
           {errors.identifier && (
-            <p className="mt-1 text-sm text-red-600">{errors.identifier.message}</p>
+            <p className="mt-1 text-sm text-destructive">{errors.identifier.message}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-card-foreground mb-1">
             {t('auth.password')}
           </label>
           <input
@@ -71,38 +71,38 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
               validate: formValidators.password,
               onChange: handleInputChange
             })}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.password ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
+              errors.password ? 'border-destructive' : 'border-border'
             }`}
             placeholder={t('auth.password_placeholder_simple')}
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+            <p className="mt-1 text-sm text-destructive">{errors.password.message}</p>
           )}
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600">{error}</p>
+          <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+            <p className="text-sm text-destructive">{error}</p>
           </div>
         )}
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isLoading ? t('auth.logging_in') : t('auth.login')}
         </button>
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           {t('auth.no_account')}{' '}
           <button
             type="button"
             onClick={onSwitchToRegister}
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="text-primary hover:text-primary/80 font-medium"
           >
             {t('auth.register_now')}
           </button>

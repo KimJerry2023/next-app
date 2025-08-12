@@ -1,4 +1,5 @@
 // Validation utilities for authentication forms
+import i18n from '@/lib/i18n'
 
 export interface ValidationResult {
   isValid: boolean
@@ -10,11 +11,11 @@ export const validateEmail = (email: string): ValidationResult => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   
   if (!email.trim()) {
-    return { isValid: false, error: '邮箱不能为空' }
+    return { isValid: false, error: i18n.t('validation.email_required') }
   }
   
   if (!emailRegex.test(email)) {
-    return { isValid: false, error: '请输入有效的邮箱地址' }
+    return { isValid: false, error: i18n.t('validation.email_invalid') }
   }
   
   return { isValid: true }
@@ -26,14 +27,14 @@ export const validatePhone = (phone: string): ValidationResult => {
   const cleanPhone = phone.replace(/\D/g, '')
   
   if (!cleanPhone) {
-    return { isValid: false, error: '手机号不能为空' }
+    return { isValid: false, error: i18n.t('validation.phone_required') }
   }
   
   // Chinese mobile number pattern (11 digits starting with 1)
   const phoneRegex = /^1[3-9]\d{9}$/
   
   if (!phoneRegex.test(cleanPhone)) {
-    return { isValid: false, error: '请输入有效的手机号码' }
+    return { isValid: false, error: i18n.t('validation.phone_invalid') }
   }
   
   return { isValid: true }
@@ -42,7 +43,7 @@ export const validatePhone = (phone: string): ValidationResult => {
 // Identifier validation (email or phone)
 export const validateIdentifier = (identifier: string): ValidationResult => {
   if (!identifier.trim()) {
-    return { isValid: false, error: '请输入邮箱或手机号' }
+    return { isValid: false, error: i18n.t('validation.identifier_required') }
   }
   
   // Check if it looks like an email
@@ -57,21 +58,21 @@ export const validateIdentifier = (identifier: string): ValidationResult => {
 // Password validation
 export const validatePassword = (password: string): ValidationResult => {
   if (!password) {
-    return { isValid: false, error: '密码不能为空' }
+    return { isValid: false, error: i18n.t('validation.password_required') }
   }
   
   if (password.length < 8 || password.length > 16) {
-    return { isValid: false, error: '密码长度必须为8-16位' }
+    return { isValid: false, error: i18n.t('validation.password_length') }
   }
   
   // Check for at least one number
   if (!/\d/.test(password)) {
-    return { isValid: false, error: '密码必须包含至少一个数字' }
+    return { isValid: false, error: i18n.t('validation.password_number') }
   }
   
   // Check for at least one letter
   if (!/[a-zA-Z]/.test(password)) {
-    return { isValid: false, error: '密码必须包含至少一个字母' }
+    return { isValid: false, error: i18n.t('validation.password_letter') }
   }
   
   return { isValid: true }
@@ -80,11 +81,11 @@ export const validatePassword = (password: string): ValidationResult => {
 // Confirm password validation
 export const validateConfirmPassword = (password: string, confirmPassword: string): ValidationResult => {
   if (!confirmPassword) {
-    return { isValid: false, error: '请确认密码' }
+    return { isValid: false, error: i18n.t('validation.confirm_password_required') }
   }
   
   if (password !== confirmPassword) {
-    return { isValid: false, error: '两次输入的密码不一致' }
+    return { isValid: false, error: i18n.t('validation.passwords_not_match') }
   }
   
   return { isValid: true }
@@ -93,11 +94,11 @@ export const validateConfirmPassword = (password: string, confirmPassword: strin
 // Name validation
 export const validateName = (name: string): ValidationResult => {
   if (!name.trim()) {
-    return { isValid: false, error: '姓名不能为空' }
+    return { isValid: false, error: i18n.t('validation.name_required') }
   }
   
   if (name.trim().length < 2) {
-    return { isValid: false, error: '姓名至少需要2个字符' }
+    return { isValid: false, error: i18n.t('validation.name_min_length') }
   }
   
   return { isValid: true }

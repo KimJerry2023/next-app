@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import i18n from '@/lib/i18n'
 
 export interface User {
   id: string
@@ -43,7 +44,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return true
     } catch (error) {
       set({ 
-        error: error instanceof Error ? error.message : '登录失败',
+        error: error instanceof Error ? error.message : i18n.t('validation.login_failed'),
         isLoading: false 
       })
       return false
@@ -69,7 +70,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return true
     } catch (error) {
       set({ 
-        error: error instanceof Error ? error.message : '注册失败',
+        error: error instanceof Error ? error.message : i18n.t('validation.register_failed'),
         isLoading: false 
       })
       return false

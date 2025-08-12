@@ -1,11 +1,12 @@
 // Form validation schemas for react-hook-form
 import { validateEmail, validatePhone, validatePassword, validateName } from './validation'
+import i18n from '@/lib/i18n'
 
 // Custom validation functions for react-hook-form
 export const formValidators = {
   identifier: (value: string) => {
     if (!value.trim()) {
-      return '请输入邮箱或手机号'
+      return i18n.t('validation.identifier_required')
     }
     
     // Check if it looks like an email
@@ -26,11 +27,11 @@ export const formValidators = {
 
   confirmPassword: (password: string) => (value: string) => {
     if (!value) {
-      return '请确认密码'
+      return i18n.t('validation.confirm_password_required')
     }
     
     if (password !== value) {
-      return '两次输入的密码不一致'
+      return i18n.t('validation.passwords_not_match')
     }
     
     return true

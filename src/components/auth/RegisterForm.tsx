@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { useAuthStore } from '@/store/authStore'
 import { formValidators, RegisterFormData } from '@/utils/formValidation'
+import { useTranslation } from 'react-i18next'
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void
@@ -10,6 +11,7 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   const { register: registerUser, isLoading, error, clearError } = useAuthStore()
+  const { t } = useTranslation('common')
 
   const {
     register,
@@ -36,12 +38,12 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">注册</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">{t('auth.register')}</h2>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            姓名
+            {t('common.name')}
           </label>
           <input
             type="text"
@@ -53,7 +55,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.name ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="请输入您的姓名"
+            placeholder={t('auth.name_placeholder')}
           />
           {errors.name && (
             <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
@@ -62,7 +64,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
         <div>
           <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
-            邮箱或手机号
+            {t('auth.email_or_phone')}
           </label>
           <input
             type="text"
@@ -74,7 +76,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.identifier ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="请输入邮箱或手机号"
+            placeholder={t('auth.email_or_phone_placeholder')}
           />
           {errors.identifier && (
             <p className="mt-1 text-sm text-red-600">{errors.identifier.message}</p>
@@ -83,7 +85,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-            密码
+            {t('auth.password')}
           </label>
           <input
             type="password"
@@ -95,19 +97,19 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.password ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="8-16位，包含数字和字母"
+            placeholder={t('auth.password_placeholder')}
           />
           {errors.password && (
             <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
           )}
           <p className="mt-1 text-xs text-gray-500">
-            密码需要8-16位，同时包含数字和字母
+            {t('auth.password_requirements')}
           </p>
         </div>
 
         <div>
           <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-            确认密码
+            {t('auth.confirm_password')}
           </label>
           <input
             type="password"
@@ -119,7 +121,7 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="请再次输入密码"
+            placeholder={t('auth.confirm_password_placeholder')}
           />
           {errors.confirmPassword && (
             <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
@@ -137,19 +139,19 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
           disabled={isLoading}
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isLoading ? '注册中...' : '注册'}
+          {isLoading ? t('auth.registering') : t('auth.register')}
         </button>
       </form>
 
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
-          已有账户？{' '}
+          {t('auth.already_have_account')}{' '}
           <button
             type="button"
             onClick={onSwitchToLogin}
             className="text-blue-600 hover:text-blue-700 font-medium"
           >
-            立即登录
+            {t('auth.login_now')}
           </button>
         </p>
       </div>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import I18nProvider from "@/components/I18nProvider";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <I18nProvider>
+          {/* 全局语言切换器 */}
+          <div className="fixed top-4 right-4 z-50">
+            <LanguageSwitcher />
+          </div>
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );

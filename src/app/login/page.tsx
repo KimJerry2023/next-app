@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { validateIdentifier, validatePassword } from '@/utils/validation'
+import { useTranslation } from 'react-i18next'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { t } = useTranslation('common')
   const [formData, setFormData] = useState({
     identifier: '',
     password: '',
@@ -81,16 +83,16 @@ export default function LoginPage() {
             href="/"
             className="text-blue-600 hover:text-blue-700 text-sm font-medium"
           >
-            ← 返回首页
+            ← {t('navigation.home')}
           </Link>
         </div>
         
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">登录</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">{t('auth.login')}</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
-              邮箱或手机号
+              {t('auth.email')}
             </label>
             <input
               type="text"
@@ -101,7 +103,7 @@ export default function LoginPage() {
               className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.identifier ? 'border-red-500' : 'border-gray-300'
               }`}
-              placeholder="请输入邮箱或手机号"
+              placeholder={t('auth.email')}
             />
             {errors.identifier && (
               <p className="mt-1 text-sm text-red-600">{errors.identifier}</p>
@@ -110,7 +112,7 @@ export default function LoginPage() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              密码
+              {t('auth.password')}
             </label>
             <input
               type="password"
@@ -121,7 +123,7 @@ export default function LoginPage() {
               className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.password ? 'border-red-500' : 'border-gray-300'
               }`}
-              placeholder="请输入密码"
+              placeholder={t('auth.password')}
             />
             {errors.password && (
               <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -139,18 +141,18 @@ export default function LoginPage() {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {isLoading ? '登录中...' : '登录'}
+            {isLoading ? t('common.loading') : t('auth.login')}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            还没有账户？{' '}
+            {t('auth.no_account')}{' '}
             <Link
               href="/register"
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
-              立即注册
+              {t('auth.register')}
             </Link>
           </p>
         </div>

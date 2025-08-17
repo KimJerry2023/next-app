@@ -40,22 +40,88 @@ export const swrConfig: SWRConfiguration = {
   },
 };
 
+// 智能fetcher函数 - 自动判断是本地API还是外部API
+const smartFetcher = (url: string, config?: any) => {
+  // 如果URL以/api开头，使用本地fetch；否则使用外部HTTP客户端
+  if (url.startsWith('/api')) {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...config?.headers,
+      },
+      ...config,
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+      }
+      return res.json();
+    });
+  }
+  return http.get(url, config);
+};
+
 // 带参数的fetcher函数
 export const fetcherWithParams = (url: string, params?: Record<string, any>) => {
+  if (url.startsWith('/api')) {
+    const urlWithParams = params ? `${url}?${new URLSearchParams(params).toString()}` : url;
+    return smartFetcher(urlWithParams);
+  }
   return http.get(url, { params });
 };
 
 // POST请求的fetcher
 export const postFetcher = (url: string, data: any) => {
+  if (url.startsWith('/api')) {
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+      }
+      return res.json();
+    });
+  }
   return http.post(url, data);
 };
 
 // PUT请求的fetcher
 export const putFetcher = (url: string, data: any) => {
+  if (url.startsWith('/api')) {
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+      }
+      return res.json();
+    });
+  }
   return http.put(url, data);
 };
 
 // DELETE请求的fetcher
 export const deleteFetcher = (url: string) => {
+  if (url.startsWith('/api')) {
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+      }
+      return res.json();
+    });
+  }
   return http.delete(url);
 };

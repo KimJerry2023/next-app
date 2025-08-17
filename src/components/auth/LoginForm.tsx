@@ -40,8 +40,10 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label htmlFor="identifier" className="block text-sm font-medium text-card-foreground mb-1">
-            {t('auth.email_or_phone')}
+          <label htmlFor="identifier" className={`block text-sm font-medium mb-1 ${
+            errors.identifier ? 'text-destructive' : 'text-card-foreground'
+          }`}>
+            {t('auth.email_or_phone')} <span className="text-destructive">*</span>
           </label>
           <input
             type="text"
@@ -61,8 +63,10 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-card-foreground mb-1">
-            {t('auth.password')}
+          <label htmlFor="password" className={`block text-sm font-medium mb-1 ${
+            errors.password ? 'text-destructive' : 'text-card-foreground'
+          }`}>
+            {t('auth.password')} <span className="text-destructive">*</span>
           </label>
           <input
             type="password"

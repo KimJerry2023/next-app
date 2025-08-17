@@ -15,8 +15,8 @@
   --color-muted-foreground: 148 163 184; /* slate-400 */
   --color-card: 15 23 42; /* slate-900 */
   --color-card-foreground: 248 250 252; /* slate-50 */
-  --color-border: 51 65 85; /* slate-700 */
-  --color-input: 51 65 85; /* slate-700 */
+  --color-border: 148 163 184; /* slate-400 - 淡灰色 */
+  --color-input: 51 65 85; /* slate-700 - 保持深色背景 */
   --color-ring: 59 130 246; /* blue-500 */
   --color-destructive: 239 68 68; /* red-500 */
   --color-destructive-foreground: 255 255 255; /* white */

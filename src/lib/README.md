@@ -1,6 +1,6 @@
 # HTTP请求模块 (SWR + Axios)
 
-这个模块提供了一个基于SWR和Axios的HTTP请求解决方案，针对`https://testapi.com/`API进行了优化配置。
+这个模块提供了一个基于SWR和Axios的HTTP请求解决方案，针对`https://bullapitest.1bullex.com/api`API进行了优化配置。
 
 ## 功能特性
 
@@ -177,7 +177,7 @@ export const swrConfig: SWRConfiguration = {
 
 ### HTTP配置 (`/lib/http/index.ts`)
 
-- 基础URL: `https://testapi.com`
+- 基础URL: `https://bullapitest.1bullex.com/api`
 - 超时时间: 10秒
 - 自动添加Authorization头部（如果有token）
 - 401错误自动跳转到登录页

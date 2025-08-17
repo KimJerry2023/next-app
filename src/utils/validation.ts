@@ -61,7 +61,7 @@ export const validatePassword = (password: string): ValidationResult => {
     return { isValid: false, error: i18n.t('validation.password_required') }
   }
   
-  if (password.length < 8 || password.length > 16) {
+  if (password.length < 8 || password.length > 20) {
     return { isValid: false, error: i18n.t('validation.password_length') }
   }
   
@@ -73,6 +73,11 @@ export const validatePassword = (password: string): ValidationResult => {
   // Check for at least one letter
   if (!/[a-zA-Z]/.test(password)) {
     return { isValid: false, error: i18n.t('validation.password_letter') }
+  }
+  
+  // Check for at least one special character
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return { isValid: false, error: i18n.t('validation.password_special') }
   }
   
   return { isValid: true }
@@ -99,6 +104,37 @@ export const validateName = (name: string): ValidationResult => {
   
   if (name.trim().length < 2) {
     return { isValid: false, error: i18n.t('validation.name_min_length') }
+  }
+  
+  return { isValid: true }
+}
+
+// Verification code validation (6 digits)
+export const validateVerificationCode = (code: string): ValidationResult => {
+  if (!code.trim()) {
+    return { isValid: false, error: i18n.t('validation.code_required') }
+  }
+  
+  const codeRegex = /^\d{6}$/
+  
+  if (!codeRegex.test(code)) {
+    return { isValid: false, error: i18n.t('validation.code_invalid') }
+  }
+  
+  return { isValid: true }
+}
+
+// Invitation code validation (optional)
+export const validateInvitationCode = (code: string): ValidationResult => {
+  // Invitation code is optional, so empty is valid
+  if (!code.trim()) {
+    return { isValid: true }
+  }
+  
+  // Add specific validation rules for invitation code if needed
+  // For now, just check it's not empty spaces
+  if (code.trim().length < 1) {
+    return { isValid: false, error: i18n.t('validation.invitation_code_invalid') }
   }
   
   return { isValid: true }

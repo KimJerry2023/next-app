@@ -2,7 +2,7 @@
 import { authManager } from '../auth';
 
 // 基础API URL
-const BASE_URL = 'https://testapi.com';
+const BASE_URL = 'https://bullapitest.1bullex.com/api';
 
 // 请求配置接口
 export interface RequestConfig {

@@ -233,7 +233,7 @@ export default function ApiDemoPage() {
       <section className="border rounded-lg p-4">
         <h3 className="text-xl font-semibold mb-2">API模块使用说明</h3>
         <div className="text-sm space-y-2 text-gray-600 dark:text-gray-400">
-          <p>• 基础API URL: https://testapi.com</p>
+          <p>• 基础API URL: https://bullapitest.1bullex.com/api</p>
           <p>• 使用基于fetch的HTTP客户端替代axios</p>
           <p>• 集成鉴权中间件，自动添加Authorization头</p>
           <p>• 自动Token刷新和错误处理机制</p>

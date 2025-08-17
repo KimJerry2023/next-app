@@ -1,91 +1,93 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { useAuthStore } from '@/store/authStore'
+import { useCreateMember } from '@/hooks/api/useMembers'
 import { formValidators, RegisterFormData } from '@/utils/formValidation'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void
+  onRegisterSuccess?: () => void
 }
 
-export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
-  const { register: registerUser, isLoading, error, clearError } = useAuthStore()
+export default function RegisterForm({ onSwitchToLogin, onRegisterSuccess }: RegisterFormProps) {
+  const { trigger: createMember, isMutating: isLoading } = useCreateMember()
   const { t } = useTranslation('common')
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     clearErrors
   } = useForm<RegisterFormData>({
     mode: 'onChange'
   })
 
-  const password = watch('password')
-
   const onSubmit = async (data: RegisterFormData) => {
-    await registerUser(data.identifier, data.password, data.name)
+    setSubmitError(null)
+    
+    try {
+      const result = await createMember({
+        country: 'CN', // 默认中国
+        areaCode: '+86', // 默认中国区号
+        email: data.email,
+        password: data.password,
+        code: data.code,
+        invitationCode: data.invitationCode || undefined
+      })
+      
+      // 注册成功后的处理
+      console.log('注册成功', result)
+      if (onRegisterSuccess) {
+        onRegisterSuccess()
+      }
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : '注册失败，请重试')
+    }
   }
 
   const handleInputChange = () => {
-    // Clear store error when user starts typing
-    if (error) {
-      clearError()
+    // Clear submit error when user starts typing
+    if (submitError) {
+      setSubmitError(null)
     }
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-card rounded-lg shadow-lg border border-border">
+    <div className="w-full max-w-md mx-auto p-6 bg-card rounded-lg shadow-lg border border-gray-200">
       <h2 className="text-2xl font-bold text-center text-card-foreground mb-6">{t('auth.register')}</h2>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-card-foreground mb-1">
-            {t('common.name')}
+          <label htmlFor="email" className={`block text-sm font-medium mb-1 ${
+            errors.email ? 'text-red-500' : 'text-card-foreground'
+          }`}>
+            {t('auth.email')} <span className="text-red-500">*</span>
           </label>
           <input
-            type="text"
-            id="name"
-            {...register('name', {
-              validate: formValidators.name,
+            type="email"
+            id="email"
+            {...register('email', {
+              validate: formValidators.email,
               onChange: handleInputChange
             })}
-            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
-              errors.name ? 'border-destructive' : 'border-border'
+            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+              errors.email ? 'border-red-500' : 'border-gray-200'
             }`}
-            placeholder={t('auth.name_placeholder')}
+            placeholder={t('auth.email_placeholder')}
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-destructive">{errors.name.message}</p>
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="identifier" className="block text-sm font-medium text-card-foreground mb-1">
-            {t('auth.email_or_phone')}
-          </label>
-          <input
-            type="text"
-            id="identifier"
-            {...register('identifier', {
-              validate: formValidators.identifier,
-              onChange: handleInputChange
-            })}
-            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
-              errors.identifier ? 'border-destructive' : 'border-border'
-            }`}
-            placeholder={t('auth.email_or_phone_placeholder')}
-          />
-          {errors.identifier && (
-            <p className="mt-1 text-sm text-destructive">{errors.identifier.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-card-foreground mb-1">
-            {t('auth.password')}
+          <label htmlFor="password" className={`block text-sm font-medium mb-1 ${
+            errors.password ? 'text-red-500' : 'text-card-foreground'
+          }`}>
+            {t('auth.password')} <span className="text-red-500">*</span>
           </label>
           <input
             type="password"
@@ -94,50 +96,76 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
               validate: formValidators.password,
               onChange: handleInputChange
             })}
-            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
-              errors.password ? 'border-destructive' : 'border-border'
+            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+              errors.password ? 'border-red-500' : 'border-gray-200'
             }`}
             placeholder={t('auth.password_placeholder')}
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-destructive">{errors.password.message}</p>
+            <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
           )}
           <p className="mt-1 text-xs text-muted-foreground">
-            {t('auth.password_requirements')}
+            8-20位，必须包含数字、字母和特殊字符
           </p>
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-card-foreground mb-1">
-            {t('auth.confirm_password')}
+          <label htmlFor="code" className={`block text-sm font-medium mb-1 ${
+            errors.code ? 'text-red-500' : 'text-card-foreground'
+          }`}>
+            {t('auth.verification_code')} <span className="text-red-500">*</span>
           </label>
           <input
-            type="password"
-            id="confirmPassword"
-            {...register('confirmPassword', {
-              validate: formValidators.confirmPassword(password),
+            type="text"
+            id="code"
+            maxLength={6}
+            {...register('code', {
+              validate: formValidators.verificationCode,
               onChange: handleInputChange
             })}
-            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
-              errors.confirmPassword ? 'border-destructive' : 'border-border'
+            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+              errors.code ? 'border-red-500' : 'border-gray-200'
             }`}
-            placeholder={t('auth.confirm_password_placeholder')}
+            placeholder="请输入6位验证码"
           />
-          {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-destructive">{errors.confirmPassword.message}</p>
+          {errors.code && (
+            <p className="mt-1 text-sm text-red-500">{errors.code.message}</p>
           )}
         </div>
 
-        {error && (
-          <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-            <p className="text-sm text-destructive">{error}</p>
+        <div>
+          <label htmlFor="invitationCode" className={`block text-sm font-medium mb-1 ${
+            errors.invitationCode ? 'text-red-500' : 'text-card-foreground'
+          }`}>
+            {t('auth.invitation_code')}
+          </label>
+          <input
+            type="text"
+            id="invitationCode"
+            {...register('invitationCode', {
+              validate: (value) => formValidators.invitationCode(value || ''),
+              onChange: handleInputChange
+            })}
+            className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+              errors.invitationCode ? 'border-red-500' : 'border-gray-200'
+            }`}
+            placeholder="请输入邀请码（可选）"
+          />
+          {errors.invitationCode && (
+            <p className="mt-1 text-sm text-red-500">{errors.invitationCode.message}</p>
+          )}
+        </div>
+
+        {submitError && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-500">{submitError}</p>
           </div>
         )}
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isLoading ? t('auth.registering') : t('auth.register')}
         </button>

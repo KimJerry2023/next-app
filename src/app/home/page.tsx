@@ -12,7 +12,7 @@ export default function HomePage() {
     <AuthenticatedLayout>
       <div className="page-content p-4">
         {/* 用户欢迎信息 */}
-        <div className="bg-card rounded-lg shadow-sm p-6 mb-6 border border-border">
+        <div className="bg-card rounded-lg shadow-sm p-6 mb-6 border border-gray-200">
           <h1 className="text-2xl font-bold text-card-foreground mb-2">
             {t('common.welcome_back')}, {user?.name}!
           </h1>
@@ -21,7 +21,7 @@ export default function HomePage() {
 
         {/* 快捷功能卡片 */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-card rounded-lg shadow-sm p-4 border border-border">
+          <div className="bg-card rounded-lg shadow-sm p-4 border border-gray-200">
             <div className="flex items-center">
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +35,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-card rounded-lg shadow-sm p-4 border border-border">
+          <div className="bg-card rounded-lg shadow-sm p-4 border border-gray-200">
             <div className="flex items-center">
               <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center mr-3">
                 <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@ export default function HomePage() {
         </div>
 
         {/* 最近活动 */}
-        <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
+        <div className="bg-card rounded-lg shadow-sm p-6 border border-gray-200">
           <h2 className="text-lg font-semibold text-card-foreground mb-4">最近活动</h2>
           <div className="space-y-3">
             <div className="flex items-center justify-between py-2">

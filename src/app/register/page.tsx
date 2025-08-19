@@ -9,7 +9,6 @@ import RegisterForm from '@/components/auth/RegisterForm'
 
 export default function RegisterPage() {
   const router = useRouter()
-  const { t } = useTranslation('common')
   const { user } = useAuthStore()
 
   // Redirect if user is already logged in
@@ -34,16 +33,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-20">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <Link 
-            href="/"
-            className="text-primary hover:text-primary/80 text-sm font-medium"
-          >
-            ← {t('navigation.home')}
-          </Link>
-        </div>
-        
+      <div className="w-full max-w-md">       
         <RegisterForm 
           onSwitchToLogin={handleSwitchToLogin} 
           onRegisterSuccess={handleRegisterSuccess}

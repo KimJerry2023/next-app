@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
     "i18next": "^25.3.4",
+    "klinecharts": "10.0.0-alpha5",
     "next": "15.4.6",
     "next-i18next": "^15.4.2",
     "react": "19.1.0",

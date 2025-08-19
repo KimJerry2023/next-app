@@ -77,7 +77,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-20">
-      <div className="w-full max-w-md bg-card rounded-lg shadow-lg p-8 border border-border">
+              <div className="w-full max-w-md bg-card rounded-lg shadow-lg p-8 border border-gray-200">
         <div className="text-center mb-6">
           <Link 
             href="/"
@@ -101,7 +101,7 @@ export default function LoginPage() {
               value={formData.identifier}
               onChange={handleChange}
               className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
-                errors.identifier ? 'border-destructive' : 'border-border'
+                errors.identifier ? 'border-destructive' : 'border-gray-200'
               }`}
               placeholder={t('auth.email')}
             />
@@ -121,7 +121,7 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               className={`w-full px-3 py-2 border rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-ring ${
-                errors.password ? 'border-destructive' : 'border-border'
+                errors.password ? 'border-destructive' : 'border-gray-200'
               }`}
               placeholder={t('auth.password')}
             />

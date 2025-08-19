@@ -2,6 +2,7 @@
 
 import AuthenticatedLayout from '@/components/layout/AuthenticatedLayout'
 import { useTranslation } from 'react-i18next'
+import Link from 'next/link'
 
 export default function MarketPage() {
   const { t } = useTranslation('common')
@@ -48,12 +49,16 @@ export default function MarketPage() {
           </div>
           
           <div className="divide-y divide-border">
-            {marketData.map((item, index) => (
-              <div key={index} className="px-4 py-4 hover:bg-accent">
+            {marketData.map((item, index) => {
+              const isBTC = item.symbol === 'BTC/USDT'
+              
+              const content = (
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-medium text-card-foreground">{item.symbol}</h3>
-                    <p className="text-sm text-muted-foreground">现货</p>
+                    <p className="text-sm text-muted-foreground">
+                      现货 {isBTC && <span className="text-primary">• 点击查看详情</span>}
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-card-foreground">¥{item.price}</p>
@@ -64,8 +69,22 @@ export default function MarketPage() {
                     </p>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+              
+              if (isBTC) {
+                return (
+                  <Link key={index} href="/market/btc" className="block px-4 py-4 hover:bg-accent cursor-pointer">
+                    {content}
+                  </Link>
+                )
+              }
+              
+              return (
+                <div key={index} className="px-4 py-4 hover:bg-accent">
+                  {content}
+                </div>
+              )
+            })}
           </div>
         </div>
 
